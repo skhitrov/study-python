@@ -42,3 +42,15 @@ def maximum(numbers: list[int]) -> int:
         if max <= number:
             max = number
     return max
+
+
+def transpose(matrix: list[list[object]]) -> list[list[object]]:
+    result = []
+    column_index = 0
+    for item in matrix[0]:
+        column = []
+        for row in matrix:
+            column.append(row[column_index])
+        result.append(column)
+        column_index = column_index + 1
+    return result
