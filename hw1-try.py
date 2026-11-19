@@ -34,3 +34,11 @@ def maximum_of_four(
         return n
     else:
         return f
+
+
+def maximum(numbers: list[int]) -> int:
+    max = numbers[0]
+    for number in numbers:
+        if max <= number:
+            max = number
+    return max
