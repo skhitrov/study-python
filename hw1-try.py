@@ -10,3 +10,27 @@ def fibonacci(n: int) -> int:
         a = b
         b = c
     return a
+
+
+def maximum_of_four(
+    a: int,
+    b: int,
+    c: int,
+    d: int,
+) -> int:
+    if a > b:
+        n = a
+        print("a maximum")
+    else:
+        n = b
+        print("b is maximum")
+    if c > d:
+        f = c
+        print("c is maximum")
+    else:
+        f = d
+        print("d is maximum")
+    if n >= f:
+        return n
+    else:
+        return f
