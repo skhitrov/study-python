@@ -54,3 +54,12 @@ def transpose(matrix: list[list[object]]) -> list[list[object]]:
         result.append(column)
         column_index = column_index + 1
     return result
+
+
+def reverse_input_lines(lines: list[str]) -> list[str]:
+    result = []
+    for line in reversed(lines):
+        numbers = line.split()
+        numbers.reverse()
+        result.append(" ".join(numbers))
+    return result
