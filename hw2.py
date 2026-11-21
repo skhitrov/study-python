@@ -75,7 +75,7 @@ def clean_words(words: list[str]) -> list[str]:
     """4. Убрать пробелы по краям слов и пропустить пустые результаты.
 
     clean_words(['  кот ', ' ', ' пёс']) -> ['кот', 'пёс']
-    Не меняйте исходный список.
+    Не меняй исходный список.
     """
     raise NotImplementedError
 
@@ -172,6 +172,33 @@ def append_then_rebind(values: list[int], added: int, replacement: int) -> list[
     raise NotImplementedError
 
 
+def remove_negatives_in_place(values: list[int]) -> None:
+    """15. Удалить из переданного списка все отрицательные числа.
+
+    Порядок оставшихся чисел сохранить, ничего не возвращать. Вызывающий
+    код должен увидеть изменение в своём списке, в том числе через другое
+    имя этого же списка.
+    remove_negatives_in_place([3, -1, -2, 0]) меняет список на [3, 0].
+    Подсказка: срезу values[:] можно присвоить новый набор элементов.
+    """
+    raise NotImplementedError
+
+
+def marked_copy(
+    board: list[list[str]], row: int, column: int, mark: str,
+) -> list[list[str]]:
+    """16. Вернуть копию поля, в которой в клетке (row, column) стоит mark.
+
+    Поле — непустой прямоугольный список списков; индекс клетки допустим.
+    Исходное поле не менять. После вызова изменение ЛЮБОЙ клетки копии не
+    должно менять исходное поле, и наоборот. Продумай, достаточно ли
+    скопировать только внешний список.
+    
+    Подсказка: можно использовать метод .copy() списка для создания копии.
+    """
+    raise NotImplementedError
+
+
 ### TESTS ###
 # Публичные тесты
 
@@ -250,6 +277,45 @@ def check_append_then_rebind(
     return 2
 
 
+def check_remove_negatives_in_place(
+    function: Callable[[list[int]], None],
+) -> int:
+    for initial, expected in [
+        ([3, -1, -2, 0], [3, 0]),
+        ([-3, -1], []),
+        ([0, 2], [0, 2]),
+        ([], []),
+    ]:
+        values = initial.copy()
+        alias = values
+        result = function(values)
+        assert result is None, "функция должна возвращать None"
+        assert values == expected, f"ожидался список {expected!r}, получено {values!r}"
+        assert alias == expected, "изменение должно быть видно через другое имя"
+    return 4
+
+
+def check_marked_copy(
+    function: Callable[[list[list[str]], int, int, str], list[list[str]]],
+) -> int:
+    for initial, row, column, mark in [
+        ([["", ""], ["", ""]], 0, 1, "X"),
+        ([["a", "b", "c"], ["d", "e", "f"]], 1, 2, "O"),
+    ]:
+        board = [line.copy() for line in initial]
+        result = function(board, row, column, mark)
+        expected = [line.copy() for line in initial]
+        expected[row][column] = mark
+        assert result == expected, f"ожидалось {expected!r}, получено {result!r}"
+        assert board == initial, "исходное поле изменилось"
+        assert result is not board, "нужен новый внешний список"
+        for line_index in range(len(board)):
+            assert result[line_index] is not board[line_index], (
+                f"строка {line_index} осталась общей у двух полей"
+            )
+    return 2
+
+
 PUBLIC_TESTS: dict[str, Callable[[], int]] = {
     "squares": lambda: PublicTests([
         ((0,), [0]), ((3,), [0, 1, 4, 9]), ((5,), [0, 1, 4, 9, 16, 25]),
@@ -294,6 +360,9 @@ PUBLIC_TESTS: dict[str, Callable[[], int]] = {
     "append_in_place": lambda: check_append_in_place(append_in_place),
     "replaced_last": lambda: check_replaced_last(replaced_last),
     "append_then_rebind": lambda: check_append_then_rebind(append_then_rebind),
+    "remove_negatives_in_place": lambda: check_remove_negatives_in_place(
+        remove_negatives_in_place),
+    "marked_copy": lambda: check_marked_copy(marked_copy),
 }
 
 
